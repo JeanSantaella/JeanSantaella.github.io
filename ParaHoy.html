@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Electrónica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #003366;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 2;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #00509e;
+            color: #fff;
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            z-index: 3;
+        }
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 0;
+        }
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 4;
+            color: #fff;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin: 80px 0 20px 0;
+        }
+        .search-bar input {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .daily-deals {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .deals-container {
+            position: relative;
+            width: 300px;
+            margin: 0 auto;
+        }
+        .deals-container img {
+            width: 100%;
+            border-radius: 10px;
+            transition: opacity 0.5s ease;
+        }
+        .deal-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            cursor: pointer;
+        }
+        .deal-control.left {
+            left: 0;
+        }
+        .deal-control.right {
+            right: 0;
+        }
+        .cart-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 4;
+            color: #003366;
+        }
+        .cart-items {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            display: none;
+            z-index: 3;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .cart-items h3 {
+            margin-top: 0;
+            color: #003366;
+        }
+        .popup-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            z-index: 3;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .popup-form h2 {
+            color: #003366;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            background: none;
+            border: none;
+            color: #333;
+        }
+        .btn-primary {
+            background-color: #003366;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background-color: #002244;
+        }
+        .sitemap {
+            background-color: #003366;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .sitemap a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .product-card {
+            display: inline-block;
+            background-color: #fff;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            text-align: center;
+            width: 200px;
+        }
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .product-card h3 {
+            color: #003366;
+        }
+        .wishlist-button {
+            background-color: #ff6347;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .wishlist-button:hover {
+            background-color: #ff4500;
+        }
+        .wishlist {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 20px;
+            width: 300px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            z-index: 3;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .wishlist h3 {
+            margin-top: 0;
+            color: #003366;
+        }
+        .social-icons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .social-icons a {
+            color: #003366;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Tienda Electrónica</h1>
+    </div>
+    <div class="menu" id="menu">
+        <button class="close-button" onclick="toggleMenu()">✖</button>
+        <a href="#">Ofertas del día</a>
+        <a href="#">Sobre nosotros</a>
+        <a href="#">Contacto</a>
+        <a href="#">Soporte</a>
+    </div>
+    <div class="menu-button" id="menuButton" onclick="toggleMenu()">☰</div>
+    <div class="search-bar">
+        <input type="text" placeholder="Buscar productos..." id="searchInput" oninput="filterProducts()">
+    </div>
+    <div class="daily-deals">
+        <h2>Ofertas del día - Save up to 30%</h2>
+        <div class="deals-container">
+            <span class="deal-control left" onclick="prevDeal()">&#10094;</span>
+            <img src="https://via.placeholder.com/300x200.png?text=Oferta+1" alt="Oferta 1" id="dealImage">
+            <span class="deal-control right" onclick="nextDeal()">&#10095;</span>
+        </div>
+    </div>
+    <div class="cart-button" onclick="toggleCart()">🛒</div>
+    <div class="cart-items" id="cartItems">
+        <h3>Carrito de Compras</h3>
+        <ul id="cartList"></ul>
+        <button class="btn-primary" onclick="checkout()">Comprar</button>
+    </div>
+    <div class="wishlist" id="wishlist">
+        <button class="close-button" onclick="toggleWishlist()">✖</button>
+        <h3>Lista de Deseos</h3>
+        <ul id="wishlistItems"></ul>
+    </div>
+   <div class="product-cards" id="productCards">
+        <div class="product-card" data-name="Razer Kraken" data-price="79" data-image="C:\Users\infin\OneDrive\Pictures\LabAnimales\descarga.jpeg">
+            <img src="C:\Users\infin\OneDrive\Pictures\LabAnimales\descarga.jpeg" alt="Razer Kraken">
+            <h3>Razer Kraken</h3>
+            <p>$79</p>
+            <button class="btn-primary" onclick="addToCart('Razer Kraken', 79, 'images/razer-kraken.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Razer Kraken', 'images/razer-kraken.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="DJI Mavic Air 2" data-price="799" data-image="images/dji-mavic-air-2.jpg">
+            <img src="images/dji-mavic-air-2.jpg" alt="DJI Mavic Air 2">
+            <h3>DJI Mavic Air 2</h3>
+            <p>$799</p>
+            <button class="btn-primary" onclick="addToCart('DJI Mavic Air 2', 799, 'images/dji-mavic-air-2.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('DJI Mavic Air 2', 'images/dji-mavic-air-2.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Google Nest Thermostat" data-price="129" data-image="images/google-nest-thermostat.jpg">
+            <img src="images/google-nest-thermostat.jpg" alt="Google Nest Thermostat">
+            <h3>Google Nest Thermostat</h3>
+            <p>$129</p>
+            <button class="btn-primary" onclick="addToCart('Google Nest Thermostat', 129, 'images/google-nest-thermostat.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Google Nest Thermostat', 'images/google-nest-thermostat.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Seagate Backup Plus" data-price="59" data-image="images/seagate-backup-plus.jpg">
+            <img src="images/seagate-backup-plus.jpg" alt="Seagate Backup Plus">
+            <h3>Seagate Backup Plus</h3>
+            <p>$59</p>
+            <button class="btn-primary" onclick="addToCart('Seagate Backup Plus', 59, 'images/seagate-backup-plus.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Seagate Backup Plus', 'images/seagate-backup-plus.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Anker Wireless Charger" data-price="25" data-image="images/anker-wireless-charger.jpg">
+            <img src="images/anker-wireless-charger.jpg" alt="Anker Wireless Charger">
+            <h3>Anker Wireless Charger</h3>
+            <p>$25</p>
+            <button class="btn-primary" onclick="addToCart('Anker Wireless Charger', 25, 'images/anker-wireless-charger.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Anker Wireless Charger', 'images/anker-wireless-charger.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Sony PlayStation 5" data-price="499" data-image="images/ps5.jpg">
+            <img src="images/ps5.jpg" alt="Sony PlayStation 5">
+            <h3>Sony PlayStation 5</h3>
+            <p>$499</p>
+            <button class="btn-primary" onclick="addToCart('Sony PlayStation 5', 499, 'images/ps5.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Sony PlayStation 5', 'images/ps5.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Xbox Series X" data-price="499" data-image="images/xbox-series-x.jpg">
+            <img src="images/xbox-series-x.jpg" alt="Xbox Series X">
+            <h3>Xbox Series X</h3>
+            <p>$499</p>
+            <button class="btn-primary" onclick="addToCart('Xbox Series X', 499, 'images/xbox-series-x.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Xbox Series X', 'images/xbox-series-x.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Nintendo Switch" data-price="299" data-image="images/nintendo-switch.jpg">
+            <img src="images/nintendo-switch.jpg" alt="Nintendo Switch">
+            <h3>Nintendo Switch</h3>
+            <p>$299</p>
+            <button class="btn-primary" onclick="addToCart('Nintendo Switch', 299, 'images/nintendo-switch.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Nintendo Switch', 'images/nintendo-switch.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Apple AirPods Pro" data-price="249" data-image="images/airpods-pro.jpg">
+            <img src="images/airpods-pro.jpg" alt="Apple AirPods Pro">
+            <h3>Apple AirPods Pro</h3>
+            <p>$249</p>
+            <button class="btn-primary" onclick="addToCart('Apple AirPods Pro', 249, 'images/airpods-pro.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Apple AirPods Pro', 'images/airpods-pro.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Samsung Galaxy Watch" data-price="199" data-image="images/galaxy-watch.jpg">
+            <img src="images/galaxy-watch.jpg" alt="Samsung Galaxy Watch">
+            <h3>Samsung Galaxy Watch</h3>
+            <p>$199</p>
+            <button class="btn-primary" onclick="addToCart('Samsung Galaxy Watch', 199, 'images/galaxy-watch.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Samsung Galaxy Watch', 'images/galaxy-watch.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Canon EOS R6" data-price="2499" data-image="images/canon-eos-r6.jpg">
+            <img src="images/canon-eos-r6.jpg" alt="Canon EOS R6">
+            <h3>Canon EOS R6</h3>
+            <p>$2499</p>
+            <button class="btn-primary" onclick="addToCart('Canon EOS R6', 2499, 'images/canon-eos-r6.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Canon EOS R6', 'images/canon-eos-r6.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="GoPro HERO9" data-price="399" data-image="images/gopro-hero9.jpg">
+            <img src="images/gopro-hero9.jpg" alt="GoPro HERO9">
+            <h3>GoPro HERO9</h3>
+            <p>$399</p>
+            <button class="btn-primary" onclick="addToCart('GoPro HERO9', 399, 'images/gopro-hero9.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('GoPro HERO9', 'images/gopro-hero9.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Logitech MX Master 3" data-price="99" data-image="images/logitech-mx-master-3.jpg">
+            <img src="images/logitech-mx-master-3.jpg" alt="Logitech MX Master 3">
+            <h3>Logitech MX Master 3</h3>
+            <p>$99</p>
+            <button class="btn-primary" onclick="addToCart('Logitech MX Master 3', 99, 'images/logitech-mx-master-3.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Logitech MX Master 3', 'images/logitech-mx-master-3.jpg')">Añadir a la lista de deseos</button>
+        </div>
+        <div class="product-card" data-name="Dell XPS 13" data-price="999" data-image="images/dell-xps-13.jpg">
+            <img src="images/dell-xps-13.jpg" alt="Dell XPS 13">
+            <h3>Dell XPS 13</h3>
+            <p>$999</p>
+            <button class="btn-primary" onclick="addToCart('Dell XPS 13', 999, 'images/dell-xps-13.jpg')">Agregar al carrito</button>
+            <button class="wishlist-button" onclick="addToWishlist('Dell XPS 13', 'images/dell-xps-13.jpg')">Añadir a la lista de deseos</button>
+        </div>
+    </div>
+
+
+</div>
+    </div>
+    <div class="popup-form" id="popupForm">
+        <button class="close-button" onclick="toggleForm()">✖</button>
+        <h2>Información de Pago</h2>
+        <form onsubmit="sendPayment(event)">
+            <label for="cardNumber">Número de Tarjeta:</label>
+            <input type="text" id="cardNumber" name="cardNumber" required><br><br>
+            <label for="cardName">Nombre en la Tarjeta:</label>
+            <input type="text" id="cardName" name="cardName" required><br><br>
+            <label for="expiryDate">Fecha de Expiración:</label>
+            <input type="text" id="expiryDate" name="expiryDate" required><br><br>
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" name="cvv" required><br><br>
+            <button class="btn-primary" type="submit">Enviar</button>
+        </form>
+    </div>
+    <div class="sitemap">
+        <a href="#">Inicio</a> | 
+        <a href="#">Ofertas</a> | 
+        <a href="#">Sobre nosotros</a> | 
+        <a href="#">Contacto</a> | 
+        <a href="#">Soporte</a>
+    </div>
+    <div class="social-icons">
+        <a href="#" title="Facebook">📘</a>
+        <a href="#" title="Twitter">🐦</a>
+        <a href="#" title="Instagram">📸</a>
+        
+    </div>
+    <script>
+        let cart = [];
+        let wishlist = [];
+        let currentDeal = 0;
+        const deals = [
+            "https://via.placeholder.com/300x200.png?text=Oferta+1",
+            "https://via.placeholder.com/300x200.png?text=Oferta+2",
+            "https://via.placeholder.com/300x200.png?text=Oferta+3"
+        ];
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const menuButton = document.getElementById('menuButton');
+            if (menu.style.display === 'flex') {
+                menu.style.display = 'none';
+                menuButton.style.display = 'block';
+            } else {
+                menu.style.display = 'flex';
+                menuButton.style.display = 'none';
+            }
+        }
+
+        function toggleCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.style.display = cartItems.style.display === 'block' ? 'none' : 'block';
+            const popupForm = document.getElementById('popupForm');
+            popupForm.style.display = 'none';
+        }
+
+        function addToCart(product, price, image) {
+            cart.push({ name: product, price: price, image: image });
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartList = document.getElementById('cartList');
+            cartList.innerHTML = '';
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}" style="width: 50px; height: auto; border-radius: 5px;"> ${item.name} - $${item.price}`;
+                cartList.appendChild(li);
+            });
+        }
+
+        function checkout() {
+            const popupForm = document.getElementById('popupForm');
+            popupForm.style.display = 'block';
+        }
+
+        function toggleForm() {
+            const popupForm = document.getElementById('popupForm');
+            popupForm.style.display = 'none';
+        }
+
+        function sendPayment(event) {
+            event.preventDefault();
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardName = document.getElementById('cardName').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            const mailtoLink = `mailto:tienda@example.com?subject=Información de Pago&body=Número de Tarjeta: ${cardNumber}%0D%0ANombre en la Tarjeta: ${cardName}%0D%0AFecha de Expiración: ${expiryDate}%0D%0ACVV: ${cvv}`;
+            window.location.href = mailtoLink;
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                const productName = product.getAttribute('data-name').toLowerCase();
+                if (productName.includes(query)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        function prevDeal() {
+            currentDeal = (currentDeal - 1 + deals.length) % deals.length;
+            document.getElementById('dealImage').src = deals[currentDeal];
+        }
+
+        function nextDeal() {
+            currentDeal = (currentDeal + 1) % deals.length;
+            document.getElementById('dealImage').src = deals[currentDeal];
+        }
+
+        function addToWishlist(product, image) {
+            wishlist.push({ name: product, image: image });
+            updateWishlist();
+        }
+
+        function updateWishlist() {
+            const wishlistItems = document.getElementById('wishlistItems');
+            wishlistItems.innerHTML = '';
+            wishlist.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<img src="${item.image}" alt="${item.name}" style="width: 50px; height: auto; border-radius: 5px;"> ${item.name}`;
+                wishlistItems.appendChild(li);
+            });
+            document.getElementById('wishlist').style.display = 'block';
+        }
+
+        function toggleWishlist() {
+            const wishlist = document.getElementById('wishlist');
+            wishlist.style.display = wishlist.style.display === 'block' ? 'none' : 'block';
+        }
+
+        window.onscroll = function() {
+            const header = document.querySelector('.header');
+            const cartButton = document.querySelector('.cart-button');
+            const menuButton = document.querySelector('.menu-button');
+            const wishlist = document.querySelector('.wishlist');
+            const cartItems = document.querySelector('.cart-items');
+            header.classList.toggle('sticky', window.scrollY > 0);
+            cartButton.classList.toggle('sticky', window.scrollY > 0);
+            menuButton.classList.toggle('sticky', window.scrollY > 0);
+            wishlist.classList.toggle('sticky', window.scrollY > 0);
+            cartItems.classList.toggle('sticky', window.scrollY > 0);
+        };
+    </script>
+</body>
+</html>
